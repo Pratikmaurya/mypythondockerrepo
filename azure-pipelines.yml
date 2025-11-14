@@ -6,7 +6,7 @@ variables:
   # --- Your Custom Variables ---
   imageRepository: 'mypythondockerrepo'
   acrConnection: 'ACR Connection'
-  aksConnection: 'AKS Connection'
+  aksConnection: 'AKS Connection'  # <--- This variable is no longer used by the task
   agentPool: 'Default'
   manifestFile: 'azure-aks.yaml'
   artifactName: 'drop'
@@ -72,7 +72,6 @@ stages:
     steps:
     
     # 1. Download the artifact (the .yaml file)
-    #    THIS IS THE NEW, FIXED TASK
     - task: DownloadPipelineArtifact@2
       displayName: 'Download manifest artifact'
       inputs:
@@ -84,7 +83,7 @@ stages:
     - task: Kubernetes@1
       displayName: 'Deploy to AKS (kubectl apply)'
       inputs:
-        kubernetesServiceConnection: $(aksConnection)
+        kubernetesServiceConnection: 'AKS Connection'  # <--- THIS IS THE FIX. Using the name directly.
         namespace: 'default'
         command: 'apply'
         useConfigurationFile: true
