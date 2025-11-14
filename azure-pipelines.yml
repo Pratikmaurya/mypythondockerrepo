@@ -6,13 +6,9 @@ variables:
   # --- Your Custom Variables ---
   imageRepository: 'mypythondockerrepo'
   acrConnection: 'ACR Connection'
-  # This is the name of your Azure subscription service connection
-  azureSubscriptionConnection: 'Azure for Students (bf3b23b7-fe7d-479b-a807-f6de142e34fa)'
   agentPool: 'Default'
   manifestFile: 'azure-aks.yaml'
   artifactName: 'drop'
-  resourceGroup: 'DevOps-rg'
-  aksCluster: 'aksfordevops'
 
 stages:
 - stage: Build
@@ -80,12 +76,15 @@ stages:
       inputs:
         buildType: 'current'
         artifactName: $(artifactName)
-        targetPath: $(Pipeline.Workspace)/$(artifactName)
-
-    # 2. Log in to Azure and set kubectl context
-    - task: AzureCLI@2
-      displayName: 'Log in and set AKS context'
+        targetPath: '$(Pipeline.Workspace)/$(artifactName)'
+    
+    # 2. Run kubectl apply
+    #    (The agent already has the kubectl context from your manual setup)
+    - task: Bash@3
+      displayName: 'Run kubectl apply'
       inputs:
-        azureSubscription: $(azureSubscriptionConnection)
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
+        targetType: 'inline'
+        script: |
+          echo "Applying manifest: $(Pipeline.Workspace)/$(artifactName)/$(manifestFile)"
+          kubectl apply -f $(Pipeline.Workspace)/$(artifactName)/$(manifestFile)
+          echo "Apply complete."
