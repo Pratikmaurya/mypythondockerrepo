@@ -16,7 +16,8 @@ spec:
       - name: dockerhub-secret   # <-- AND THIS LINE
       containers:
       - name: mypythondockerrepo
-        image: kumarpm/mypythondockerrepo:latest
+       # image: kumarpm/mypythondockerrepo:latest
+        image: kpratikdevopsacr.azurecr.io/mypythondockerrepo:latest
         ports:
         - containerPort: 5000
 ---
