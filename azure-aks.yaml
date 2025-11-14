@@ -12,6 +12,8 @@ spec:
       labels:
         app: python-app
     spec:
+      imagePullSecrets:          # <-- ADD THIS LINE
+      - name: dockerhub-secret   # <-- AND THIS LINE
       containers:
       - name: mypythondockerrepo
         image: kumarpm/mypythondockerrepo:latest
