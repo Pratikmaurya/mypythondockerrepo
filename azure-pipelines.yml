@@ -72,8 +72,13 @@ stages:
     steps:
     
     # 1. Download the artifact (the .yaml file)
-    - download: current
-      artifact: $(artifactName)
+    #    THIS IS THE NEW, FIXED TASK
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download manifest artifact'
+      inputs:
+        buildType: 'current'
+        artifactName: '$(artifactName)'
+        targetPath: '$(Pipeline.Workspace)/$(artifactName)'
 
     # 2. Deploy to Kubernetes
     - task: Kubernetes@1
