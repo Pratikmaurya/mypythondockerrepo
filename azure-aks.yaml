@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mypythondockerrepo
-        image: __ImageName__:__ImageTag__
+        image: kumarpm/mypythondockerrepo:latest
         ports:
         - containerPort: 5000
 ---
